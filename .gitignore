@@ -4,4 +4,3 @@
 
 ansible.cfg
 poetry.lock
-pyproject.toml
