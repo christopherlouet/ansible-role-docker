@@ -1,0 +1,11 @@
+---
+profile: production
+
+exclude_paths:
+  - .cache/
+  - .idea/
+  - .vscode
+
+var_naming_pattern: "^[a-z_][a-z0-9_]*$"
+use_default_rules: true
+max_block_depth: 20

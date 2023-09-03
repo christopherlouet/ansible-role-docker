@@ -1,0 +1,7 @@
+.idea
+.vscode
+*.retry
+
+ansible.cfg
+poetry.lock
+pyproject.toml

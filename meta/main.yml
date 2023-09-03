@@ -1,0 +1,24 @@
+---
+dependencies: []
+
+galaxy_info:
+  namespace: clouet
+  role_name: docker
+  author: Christopher LOUËT
+  description: This role will assume the install of docker and docker-compose.
+  license: "MIT"
+  min_ansible_version: "2.1"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+    - name: Debian
+      versions:
+        - bullseye
+
+  galaxy_tags:
+    - packaging
+    - system
+    - containers
+    - compose
+    - docker

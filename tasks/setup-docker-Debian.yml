@@ -1,0 +1,51 @@
+---
+
+- name: Install packages
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+    state: present
+    update_cache: true
+
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: "{{ docker_apt_gpg_key }}"
+    state: present
+
+- name: Verify that we have the key with the fingerprint
+  ansible.builtin.apt_key:
+    id: "{{ docker_debian_apt_key }}"
+    state: present
+
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+    update_cache: true
+
+- name: Install docker-ce
+  ansible.builtin.apt:
+    name: docker-ce
+    state: present
+    update_cache: false
+  notify:
+    - Restart and enable docker
+
+- name: Create docker group
+  ansible.builtin.group:
+    name: "{{ docker_group }}"
+    state: present
+  notify:
+    - Restart and enable docker
+
+- name: Add ansible user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user | default('root') }}"
+    groups: "{{ docker_group }}"
+    append: true
+  notify:
+    - Restart and enable docker

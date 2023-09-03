@@ -1,0 +1,37 @@
+---
+
+- name: Check Docker package status
+  ansible.builtin.package:
+    name: docker-ce
+    state: present
+  check_mode: true
+  register: pkg_status
+
+- name: Test Docker package is installed
+  ansible.builtin.assert:
+    that:
+      - not pkg_status.changed
+
+- name: Check docker group
+  ansible.builtin.group:
+    name: "{{ docker_group }}"
+    state: present
+  check_mode: true
+  register: group_status
+
+- name: Test Docker group
+  ansible.builtin.assert:
+    that:
+      - not group_status.changed
+
+- name: Check ansible user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user | default('root') }}"
+    groups: "{{ docker_group }}"
+  check_mode: true
+  register: user_status
+
+- name: Test Docker user
+  ansible.builtin.assert:
+    that:
+      - not user_status.changed
