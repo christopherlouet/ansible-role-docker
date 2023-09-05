@@ -3,4 +3,4 @@
   ansible.builtin.include_tasks: docker.yml
 
 - name: Include docker-compose installation tasks
-  ansible.builtin.include_tasks: docker-compose.yml
+  ansible.builtin.include_tasks: docker_compose.yml
