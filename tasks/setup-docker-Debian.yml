@@ -1,5 +1,4 @@
 ---
-
 - name: Install packages
   ansible.builtin.apt:
     name:
@@ -37,7 +36,7 @@
 
 - name: Create docker group
   ansible.builtin.group:
-    name: "{{ docker_group }}"
+    name: docker
     state: present
   notify:
     - Restart and enable docker
@@ -45,7 +44,10 @@
 - name: Add ansible user to docker group
   ansible.builtin.user:
     name: "{{ ansible_user | default('root') }}"
-    groups: "{{ docker_group }}"
+    groups: docker
     append: true
   notify:
     - Restart and enable docker
+
+- name: Flush handlers
+  meta: flush_handlers

@@ -1,7 +1,7 @@
 ---
-
 - name: Restart and enable docker
   ansible.builtin.service:
     name: docker
     state: restarted
     enabled: true
+  when: "'molecule' not in group_names"

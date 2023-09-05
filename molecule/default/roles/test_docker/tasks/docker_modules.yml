@@ -1,0 +1,42 @@
+---
+- name: Pull an image
+  community.docker.docker_image:
+    name: "{{ docker_image }}"
+    source: pull
+  check_mode: true
+  register: docker_image_status
+
+- name: Test image is pulled
+  ansible.builtin.assert:
+    that:
+      - docker_image_status.changed
+
+- name: Create a data container
+  community.docker.docker_container:
+    name: data_container
+    image: "{{ docker_image }}"
+    volumes:
+      - /data
+  check_mode: true
+  register: docker_container_status
+
+- name: Test container is created
+  ansible.builtin.assert:
+    that:
+      - docker_container_status.changed
+
+- name: Create a docker-compose project
+  community.docker.docker_compose:
+    project_name: test_docker_compose
+    definition:
+      version: '2'
+      services:
+        test:
+          image: "{{ docker_image }}"
+  check_mode: true
+  register: docker_compose_status
+
+- name: Test docker-compose project is created
+  ansible.builtin.assert:
+    that:
+      - docker_compose_status.changed

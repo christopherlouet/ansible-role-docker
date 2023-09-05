@@ -1,14 +1,6 @@
 ---
-
 - name: Converge
-  hosts: molecule-docker-compose-2
-  tasks:
-    - name: Re-exec role
-      ansible.builtin.include_role:
-        name: clouet.docker
-
-- name: Converge
-  hosts: molecule-docker-compose-1
+  hosts: all
   tasks:
     - name: Re-exec role
       ansible.builtin.include_role:
