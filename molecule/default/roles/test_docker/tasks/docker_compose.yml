@@ -14,4 +14,7 @@
 - name: Test docker-compose is installed
   ansible.builtin.assert:
     that:
-      - docker_compose_current_version is version(docker_compose_version, '=')
+      - docker_compose_current_version is version(docker_compose_version | regex_search('(\\d+(\\.\\d+)+)'), '=')
+
+#- name: Test module docker
+#

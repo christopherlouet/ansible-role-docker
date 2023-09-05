@@ -9,11 +9,20 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: molecule-debian-bullseye
+  - name: molecule-docker-compose-1
     image: python:slim-bullseye
     pre_build_image: true
-    groups:
-      - molecule
+    env:
+      http_proxy: "${http_proxy}"
+      https_proxy: "${https_proxy}"
+      no_proxy: "${no_proxy} "
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+  - name: molecule-docker-compose-2
+    image: python:slim-bullseye
+    pre_build_image: true
     env:
       http_proxy: "${http_proxy}"
       https_proxy: "${https_proxy}"
@@ -29,6 +38,14 @@ provisioner:
   config_options:
     defaults:
       callbacks_enabled: profile_tasks, timer
+  inventory:
+    host_vars:
+      molecule-docker-compose-1:
+        docker_compose_install: true
+        docker_compose_version: "1.29.2"
+      molecule-docker-compose-2:
+        docker_compose_install: true
+        docker_compose_version: "v2.20.3"
 scenario:
   name: default
   converge_sequence:
